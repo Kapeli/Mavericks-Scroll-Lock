@@ -13,8 +13,6 @@
 }
 
 @property (assign, nonatomic) int lockStatus;
-@property (assign, nonatomic) int lockCount;
-@property (assign, nonatomic) int ignoreCount;
 
 - (CFMachPortRef)eventTap;
 

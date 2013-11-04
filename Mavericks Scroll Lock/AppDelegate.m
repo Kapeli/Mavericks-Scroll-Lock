@@ -18,8 +18,6 @@ static CGEventRef TapCallback(CGEventTapProxy proxy, CGEventType event_type, CGE
         if(phase == kCGScrollPhaseEnded)
         {
             manager.lockStatus = DHUnlocked;
-            manager.lockCount = 0;
-            manager.ignoreCount = 0;
         }
         else if(manager.lockStatus != DHIgnored)
         {
@@ -29,22 +27,11 @@ static CGEventRef TapCallback(CGEventTapProxy proxy, CGEventType event_type, CGE
             }
             else
             {
-                double deltaY = CGEventGetDoubleValueField(event, kCGScrollWheelEventDeltaAxis1);
-                double deltaX = CGEventGetDoubleValueField(event, kCGScrollWheelEventDeltaAxis2);
-                if(deltaY != 0.0)
-                {
-                    ++manager.lockCount;
-                }
-                if(deltaX != 0.0)
-                {
-                    manager.lockCount = 0;
-                    ++manager.ignoreCount;
-                }
-                if(manager.lockCount > 3)
+                if(CGEventGetDoubleValueField(event, kCGScrollWheelEventDeltaAxis1) != 0.0) // deltaY
                 {
                     manager.lockStatus = DHLocked;
                 }
-                else if(manager.ignoreCount > 3)
+                else if(CGEventGetDoubleValueField(event, kCGScrollWheelEventDeltaAxis2) != 0.0) // deltaX
                 {
                     manager.lockStatus = DHIgnored;
                 }
